@@ -1,7 +1,7 @@
 //Création de la base de données modèle utilisateur
 const mongoose = require('mongoose');
 
-const userSchema = mongoose.schema({
+const userSchema = mongoose.Schema({
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true}
 });
