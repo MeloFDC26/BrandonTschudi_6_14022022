@@ -1,7 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require ('body-parser');
 
 const app = express();
+const userRoutes = require('./routes/user');
 
 //Connection à la base de données (MONGOOSE = noSQL)
 mongoose
@@ -13,6 +15,9 @@ mongoose
   .catch(() => console.log("Connexion à MongoDB échouée !"));
 
 app.use(express.json());
+app.use(bodyParser.json());
+
+app.use('/api/auth', userRoutes);
 
 
 
