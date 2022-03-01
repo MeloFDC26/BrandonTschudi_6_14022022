@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 //Fonction signup qui crypte le MDP, crée un nouvel utilisateur et l'enregistre dans la base de données
 exports.signup = (req, res, next) => {
@@ -33,7 +34,11 @@ exports.login = (req, res, next) => {
           }
           res.status(200).json({
             userID: user._id,
-            token: "TOKEN",
+            token: jwt.sign(
+                { userID: user._id },
+                'RANDOM_TOKEN_SECRET',
+                { expiresIn: '24h' }
+            )
           });
         })
         .catch((error) => res.status(500).json({ error }));
