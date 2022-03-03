@@ -11,7 +11,7 @@ exports.getAllSauces = (req, res, next) => {
 
 //Fonction qui permet de récupérer une sauce
 exports.getOneSauce = (req, res, next) => {
-  Sauce.findOne({_id: req.params.id})
+  Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
       return res.status(200).json(sauce);
     })
@@ -24,5 +24,13 @@ exports.createSauce = (req, res) => {
   sauce
     .save()
     .then(() => res.status(201).json({ message: "Sauce créée !" }))
+    .catch((error) => res.status(400).json({ error }));
+};
+
+//Fonction qui permet de modifier une sauce
+exports.updateOneSauce = (req, res, next) => {
+  const sauce = req.body;
+  Sauce.updateOne({ _id: req.params.id }, { ...sauce, _id: req.params.id })
+    .then(() => res.status(201).json({ message: "Sauce modifiée !" }))
     .catch((error) => res.status(400).json({ error }));
 };
