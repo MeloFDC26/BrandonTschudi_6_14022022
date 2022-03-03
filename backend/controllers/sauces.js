@@ -1,6 +1,6 @@
 const Sauce = require("../models/Sauce");
 
-//Fonction signup qui crypte le MDP, crée un nouvel utilisateur et l'enregistre dans la base de données
+//Fonction pour récupérer toutes les sauces
 exports.getAllSauces = (req, res, next) => {
   Sauce.find()
     .then((sauces) => {
@@ -9,7 +9,14 @@ exports.getAllSauces = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
-//Fonction qui retrouve
+//Fonction pour récupérer une sauce
+exports.getOneSauce = (req, res, next) => {
+  Sauce.findOne({_id: req.params.id})
+    .then((sauce) => {
+      return res.status(200).json(sauce);
+    })
+    .catch((error) => res.status(500).json({ error }));
+};
 
 //Fonction qui permet de créer une sauce
 exports.createSauce = (req, res) => {
