@@ -18,9 +18,13 @@ exports.getOneSauce = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
-//Fonction qui permet de créer une sauce
+//Fonction qui permet de créer une sauce avec gestion de l'URL de l'image pour 'multer'
 exports.createSauce = (req, res) => {
-  const sauce = new Sauce(req.body);
+  const sauceObject = JSON.parse(req.body.sauce);
+  const sauce = new Sauce({
+    ...sauceObject,
+    imageUrl: `${req.protocol}://${req.get('host')}/images/${req.filename}` //Composition de l'URL
+  });
   sauce
     .save()
     .then(() => res.status(201).json({ message: "Sauce créée !" }))
