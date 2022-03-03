@@ -36,6 +36,7 @@ app.use(bodyParser.json());
 //Ajout du chemin statique pour le stockage des images
 app.use('/images', express.static(path.join(__dirname, 'images'))); //On dit à Express que pour les requêtes vers '/images' on veut servir le dossier 'images'
 
+//Ajout des routes utilisateur et sauces
 app.use('/api/auth', userRoutes);
 app.use('/api/sauces', saucesRoutes);
 
