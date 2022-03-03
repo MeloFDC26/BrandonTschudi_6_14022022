@@ -4,6 +4,7 @@ const bodyParser = require ('body-parser');
 
 const app = express();
 const userRoutes = require('./routes/user');
+const saucesRoutes = require('./routes/sauces');
 
 //Connection à la base de données (MONGOOSE = noSQL)
 mongoose
@@ -32,7 +33,7 @@ app.use(express.json());
 app.use(bodyParser.json());
 
 app.use('/api/auth', userRoutes);
-
+app.use('/api/sauces', saucesRoutes);
 
 
 module.exports = app;
