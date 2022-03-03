@@ -1,6 +1,6 @@
 const Sauce = require("../models/Sauce");
 
-//Fonction pour récupérer toutes les sauces
+//Fonction qui permet de récupérer toutes les sauces
 exports.getAllSauces = (req, res, next) => {
   Sauce.find()
     .then((sauces) => {
@@ -9,7 +9,7 @@ exports.getAllSauces = (req, res, next) => {
     .catch((error) => res.status(500).json({ error }));
 };
 
-//Fonction pour récupérer une sauce
+//Fonction qui permet de récupérer une sauce
 exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({_id: req.params.id})
     .then((sauce) => {
