@@ -2,9 +2,9 @@ const multer = require("multer");
 
 //Dictionnaire pour la gestion de l'extention du fichier
 const MIME_TYPES = {
-  "images/jpg": ".jpg",
-  "images/jpeg": ".jpg",
-  "images/png": ".png",
+  "image/jpg": "jpg",
+  "image/jpeg": "jpg",
+  "image/png": "png",
 };
 
 //Création objet de configuration de 'multer'
@@ -16,8 +16,8 @@ const storage = multer.diskStorage({
   //Configuration du nom du fichier avec gestion des espaces (changés par '_')
   filename: (req, file, callback) => {
     const name = file.originalname.split(" ").join("_");
-    const extention = MIME_TYPES[file.mimetype]; //Gestion de l'extention du fichier
-    callback(null, name + Date.now() + "." + extention); //Création du filename avec ajout de la date dans le nom pour le rendre le plus unique possible
+    const extension = MIME_TYPES[file.mimetype]; //Gestion de l'extention du fichier
+    callback(null, name + Date.now() + "." + extension); //Création du filename avec ajout de la date dans le nom pour le rendre le plus unique possible
   },
 });
 
