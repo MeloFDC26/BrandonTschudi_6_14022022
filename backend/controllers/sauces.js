@@ -16,7 +16,7 @@ exports.getOneSauce = (req, res, next) => {
     .then((sauce) => {
       return res.status(200).json(sauce);
     })
-    .catch((error) => res.status(500).json({ error }));
+    .catch((error) => res.status(404).json({ error }));
 };
 
 //Fonction qui permet de créer une sauce avec gestion de l'URL de l'image pour 'multer'
@@ -36,14 +36,37 @@ exports.createSauce = (req, res, next) => {
 
 //Fonction qui permet de modifier une sauce
 exports.updateOneSauce = (req, res, next) => {
-  const sauceObject = req.file ?
-    {
-      ...JSON.parse(req.body.sauce),
-      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    } : { ...req.body };
-  Sauce.updateOne({ _id: req.params.id }, { ...sauceObject, _id: req.params.id })
-    .then(() => res.status(200).json({ message: 'Sauce modifiée !'}))
-    .catch(error => res.status(400).json({ error }));
+  if (req.file) {
+    console.log("if");
+    Sauce.findOne({ _id: req.params.id })
+      .then((sauce) => {
+        const filename = sauce.imageUrl.split("/images/")[1];
+        fs.unlink(`images/${filename}`, () => {
+          const sauceObject = {
+            ...JSON.parse(req.body.sauce),
+            imageUrl: `${req.protocol}://${req.get("host")}/images/${
+              req.file.filename
+            }`,
+          };
+          Sauce.updateOne(
+            { _id: req.params.id },
+            { ...sauceObject, _id: req.params.id }
+          )
+            .then(() => res.status(200).json({ message: "Sauce modifiée !" }))
+            .catch((error) => res.status(400).json({ error }));
+        });
+      })
+      .catch((error) => res.status(500).json({ error }));
+  } else {
+    console.log("else");
+    const sauceObject = { ...req.body };
+    Sauce.updateOne(
+      { _id: req.params.id },
+      { ...sauceObject, _id: req.params.id }
+    )
+      .then(() => res.status(200).json({ message: "Sauce modifiée !" }))
+      .catch((error) => res.status(400).json({ error }));
+  }
 };
 
 //Fonction qui permet de supprimer une sauce
@@ -53,7 +76,7 @@ exports.deleteSauce = (req, res, next) => {
       const filename = sauce.imageUrl.split('/images/')[1];
       fs.unlink(`images/${filename}`, () => {
         sauce.deleteOne({ _id: req.params.id })
-          .then(() => res.status(200).json({ message: 'Objet supprimé !'}))
+          .then(() => res.status(200).json({ message: 'Sauce supprimé !'}))
           .catch(error => res.status(400).json({ error }));
       });
     })
