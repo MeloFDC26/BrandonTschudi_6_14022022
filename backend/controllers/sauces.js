@@ -2,7 +2,7 @@ const Sauce = require("../models/Sauce");
 const fs = require("fs");
 
 //Fonction qui permet de récupérer toutes les sauces
-exports.getAllSauces = (req, res) => {
+exports.getAllSauces = (req, res, next) => {
   Sauce.find()
     .then((sauces) => {
       return res.status(200).json(sauces);
@@ -11,7 +11,7 @@ exports.getAllSauces = (req, res) => {
 };
 
 //Fonction qui permet de récupérer une sauce
-exports.getOneSauce = (req, res) => {
+exports.getOneSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then((sauce) => {
       return res.status(200).json(sauce);
@@ -20,9 +20,9 @@ exports.getOneSauce = (req, res) => {
 };
 
 //Fonction qui permet de créer une sauce avec gestion de l'URL de l'image pour 'multer'
-exports.createSauce = (req, res) => {
+exports.createSauce = (req, res, next) => {
   const sauceObject = JSON.parse(req.body.sauce);
-  delete sauceObject.id;
+  delete sauceObject._id;
   const sauce = new Sauce({
     ...sauceObject,
     imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`, //Composition de l'URL
@@ -35,7 +35,7 @@ exports.createSauce = (req, res) => {
 
 
 //Fonction qui permet de modifier une sauce
-exports.updateOneSauce = (req, res) => {
+exports.updateOneSauce = (req, res, next) => {
   const sauceObject = req.file ?
     {
       ...JSON.parse(req.body.sauce),
@@ -47,7 +47,7 @@ exports.updateOneSauce = (req, res) => {
 };
 
 //Fonction qui permet de supprimer une sauce
-exports.deleteSauce = (req, res) => {
+exports.deleteSauce = (req, res, next) => {
   Sauce.findOne({ _id: req.params.id })
     .then(sauce => {
       const filename = sauce.imageUrl.split('/images/')[1];
