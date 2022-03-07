@@ -9,7 +9,7 @@ const app = express();
 const userRoutes = require('./routes/user');
 const saucesRoutes = require('./routes/sauces');
 
-//Connection à la base de données (MONGOOSE = noSQL)
+//Connection à la base de données (MONGOOSE = noSQL) et protection des données sensibles avec 'dotenv'
 mongoose
   .connect(
     `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`,
