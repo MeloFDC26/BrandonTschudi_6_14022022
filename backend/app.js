@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const bodyParser = require ('body-parser');
 const path = require('path');
 
+require("dotenv").config();
+
 const app = express();
 const userRoutes = require('./routes/user');
 const saucesRoutes = require('./routes/sauces');
@@ -10,7 +12,7 @@ const saucesRoutes = require('./routes/sauces');
 //Connection à la base de données (MONGOOSE = noSQL)
 mongoose
   .connect(
-    "mongodb+srv://melo_fdc:italia73@cluster0.13onk.mongodb.net/PIIQUANTE_database?retryWrites=true&w=majority",
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}/${process.env.DB_NAME}?retryWrites=true&w=majority`,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => console.log("Connexion à MongoDB réussie !"))
