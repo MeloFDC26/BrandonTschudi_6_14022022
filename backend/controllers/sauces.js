@@ -103,7 +103,7 @@ exports.likeSauce = (req, res, next) => {
       }
       let message;
       switch (
-        req.body.like //Dans le cas où req.body.like = 1, on éxécute case 1;
+        req.body.like //Dans le cas où req.body.like = 1, on éxécute case 1 et ainsi de suite
       ) {
         case 1:
           sauce.likes += 1;
