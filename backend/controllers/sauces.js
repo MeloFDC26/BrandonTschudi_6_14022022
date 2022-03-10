@@ -28,14 +28,15 @@ exports.createSauce = (req, res, next) => {
   delete sauceObject._id;
   const sauce = new Sauce({
     ...sauceObject,
+    //Composition de l'URL
     imageUrl: `${req.protocol}://${req.get("host")}/images/${
       req.file.filename
-    }`, //Composition de l'URL
+    }`,
   });
   sauce
     .save()
     .then(() => res.status(201).json({ message: "Sauce créée !" }))
-    .catch((error) => res.status(400).json({ error }));
+    .catch((error) => res.status(500).json({ error }));
 };
 
 //Fonction qui permet de modifier une sauce
@@ -59,7 +60,7 @@ exports.updateOneSauce = (req, res, next) => {
             { ...sauceObject, _id: req.params.id }
           )
             .then(() => res.status(200).json({ message: "Sauce modifiée !" }))
-            .catch((error) => res.status(400).json({ error }));
+            .catch((error) => res.status(500).json({ error }));
         });
       })
       .catch((error) => res.status(500).json({ error }));
@@ -70,7 +71,7 @@ exports.updateOneSauce = (req, res, next) => {
       { ...sauceObject, _id: req.params.id }
     )
       .then(() => res.status(200).json({ message: "Sauce modifiée !" }))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => res.status(500).json({ error }));
   }
 };
 
@@ -86,7 +87,7 @@ exports.deleteSauce = (req, res, next) => {
         sauce
           .deleteOne({ _id: req.params.id })
           .then(() => res.status(200).json({ message: "Sauce supprimée !" }))
-          .catch((error) => res.status(400).json({ error }));
+          .catch((error) => res.status(500).json({ error }));
       });
     })
     .catch((error) => res.status(500).json({ error }));
